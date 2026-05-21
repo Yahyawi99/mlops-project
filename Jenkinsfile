@@ -1,5 +1,9 @@
 pipeline {
     agent any
+
+    triggers {
+        pollSCM('H/5 * * * *') 
+    }
     
     environment {
         GITHUB_USERNAME = "Yahyawi99" 
@@ -9,7 +13,7 @@ pipeline {
         stage('1. Install Heavy Dependencies') {
             steps {
                 echo "Provisioning deep learning packages..."
-                sh 'pip install --break-system-packages -r requirements.txt'
+                sh 'pip install --break-system-packages --resume-retries -r requirements.txt'
             }
         }
         
