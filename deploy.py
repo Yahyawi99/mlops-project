@@ -1,0 +1,7 @@
+print("--------------------------------------------------")
+print("CD STARTED")
+print("Fetching the approved model artifact...")
+print("Serving model API into Production Environment...")
+print("Automatically updating documentation system...")
+print("Deployment Complete! System is fully operational.")
+print("--------------------------------------------------")
