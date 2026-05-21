@@ -9,7 +9,7 @@ pipeline {
         stage('1. Install Heavy Dependencies') {
             steps {
                 echo "Provisioning deep learning packages..."
-                sh 'pip install ray[train] torch transformers typer mlflow --quiet'
+                sh 'pip install --break-system-packages -r requirements.txt'
             }
         }
         
