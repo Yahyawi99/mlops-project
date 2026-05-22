@@ -33,9 +33,9 @@ pipeline {
         }
         
         stage('2. Execute ML Workloads (CI)') {
-            when {
-                expression { params.EVENT_TYPE == 'PULL_REQUEST' || params.EVENT_TYPE == 'RETRAIN_ON_NEW_DATA' }
-            }
+            // when {
+            //     expression { params.EVENT_TYPE == 'PULL_REQUEST' || params.EVENT_TYPE == 'RETRAIN_ON_NEW_DATA' }
+            // }
             steps {
                 echo "Triggering Ray Torch distributed trainer..."
                 
