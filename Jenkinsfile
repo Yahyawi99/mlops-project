@@ -27,6 +27,7 @@ pipeline {
                     pandas \
                     numpy \
                     scikit-learn
+                    --resume-retries 10
                 '''
             }
         }
