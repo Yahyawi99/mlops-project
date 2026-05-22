@@ -26,7 +26,7 @@ pipeline {
                     mlflow \
                     pandas \
                     numpy \
-                    scikit-learn
+                    scikit-learn \
                     --resume-retries 10
                 '''
             }
