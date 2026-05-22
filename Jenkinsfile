@@ -40,7 +40,7 @@ pipeline {
                 echo "Triggering Ray Torch distributed trainer..."
                 
                 sh '''
-                python3 -m madewithml.train.py \
+                python3 -m madewithml.train \
                     --experiment-name "madewithml-experiment" \
                     --dataset-loc "datasets/projects.csv" \
                     --train-loop-config '{"dropout_p": 0.5, "lr": 1e-4, "lr_factor": 0.8, "lr_patience": 3}' \
