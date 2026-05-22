@@ -17,7 +17,17 @@ pipeline {
 
                 // echo "Provisioning deep learning packages..."
                 // sh 'pip install --break-system-packages -r requirements.txt  --resume-retries 10'
-                sh 'pip install --break-system-packages ray[train] torch transformers typer mlflow pandas numpy scikit-learn
+               sh '''
+                pip install --break-system-packages \
+                    ray[train] \
+                    torch \
+                    transformers \
+                    typer \
+                    mlflow \
+                    pandas \
+                    numpy \
+                    scikit-learn
+                '''
             }
         }
         
