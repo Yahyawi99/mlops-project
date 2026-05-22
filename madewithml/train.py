@@ -201,12 +201,19 @@ def train_model(
         checkpoint_score_order="min",
     )
 
-    # Run config (Decoupled legacy Tune callback to satisfy Ray V2 architecture)
+    # Run config
     run_config = RunConfig(checkpoint_config=checkpoint_config, storage_path=EFS_DIR)
 
     # Dataset
     ds = data.load_data(dataset_loc=dataset_loc, num_samples=train_loop_config["num_samples"])
     train_ds, val_ds = data.stratify_split(ds, stratify="tag", test_size=0.2)
+    
+    # 🟩 MATERIALIZE IMMEDIATELY HERE
+    # This prevents modern Ray's lazy-planner from optimizing the downstream
+    # preprocessor step ahead of the shuffling step, keeping the 'tag' field intact.
+    train_ds = train_ds.materialize()
+    val_ds = val_ds.materialize()
+
     tags = train_ds.unique(column="tag")
     train_loop_config["num_classes"] = len(tags)
 
@@ -245,14 +252,13 @@ def train_model(
     }
     logger.info(json.dumps(d, indent=2))
     
-    # Clean MLflow Native Tracking integration for modern environments
+    # Clean MLflow Native Tracking integration
     if MLFLOW_TRACKING_URI:
         try:
             mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
             mlflow.set_experiment(experiment_name)
             with mlflow.start_run(run_id=d["run_id"] if d["run_id"] else None):
                 mlflow.log_params(d["params"])
-                # Log final tracking metrics
                 if "train_loss" in results.metrics:
                     mlflow.log_metric("train_loss", results.metrics["train_loss"])
                 if "val_loss" in results.metrics:
